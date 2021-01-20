@@ -112,15 +112,15 @@ pub use crate::context::Context;
 
 #[macro_use]
 pub mod macros;
-mod axis;
+pub mod axis;
 pub mod context;
-mod expression;
+pub mod expression;
 pub mod function;
-mod node_test;
+pub mod node_test;
 pub mod nodeset;
-mod parser;
+pub mod parser;
 mod token;
-mod tokenizer;
+pub mod tokenizer;
 
 // These belong in the the document
 
@@ -199,7 +199,7 @@ impl<'a> From<QName<'a>> for OwnedQName {
     }
 }
 
-type LiteralValue = Value<'static>;
+pub type LiteralValue = Value<'static>;
 
 /// The primary types of values that an XPath expression accepts
 /// as an argument or returns as a result.

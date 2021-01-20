@@ -1,3 +1,4 @@
+use downcast_rs::{impl_downcast, Downcast};
 use std::fmt;
 
 use sxd_document::QName;
@@ -5,9 +6,11 @@ use sxd_document::QName;
 use crate::context;
 use crate::nodeset::{self, OrderedNodes};
 
-pub trait NodeTest: fmt::Debug {
+pub trait NodeTest: fmt::Debug + Downcast {
     fn test<'c, 'd>(&self, context: &context::Evaluation<'c, 'd>, result: &mut OrderedNodes<'d>);
 }
+
+impl_downcast!(NodeTest);
 
 impl<T: ?Sized> NodeTest for Box<T>
 where
@@ -45,7 +48,7 @@ impl NameTest {
 
 #[derive(Debug)]
 pub struct Attribute {
-    name_test: NameTest,
+    pub name_test: NameTest,
 }
 
 impl Attribute {
@@ -87,7 +90,7 @@ impl NodeTest for Namespace {
 
 #[derive(Debug)]
 pub struct Element {
-    name_test: NameTest,
+    pub name_test: NameTest,
 }
 
 impl Element {

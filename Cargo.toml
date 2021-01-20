@@ -1,15 +1,13 @@
 [package]
-name = "sxd-xpath"
-version = "0.4.2"
-authors = ["Jake Goulding <jake.goulding@gmail.com>"]
+name = "sxd-xpath-visitor"
+version = "0.4.3"
 edition = "2018"
 
 description = "A Rust XML XPath library"
 readme = "README.md"
 keywords = ["xml", "xpath"]
 
-repository = "https://github.com/shepmaster/sxd-xpath"
-documentation = "https://docs.rs/sxd-xpath/"
+repository = "https://https://github.com/ccole-juniper/sxd-xpath"
 
 license = "MIT/Apache-2.0"
 
@@ -21,3 +19,4 @@ unstable = []
 peresil = "0.3.0"
 sxd-document = ">= 0.2, < 0.4"
 snafu = "0.5.0"
+downcast-rs = "1.2.0"

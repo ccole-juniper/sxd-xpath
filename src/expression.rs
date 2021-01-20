@@ -1,3 +1,4 @@
+use downcast_rs::{impl_downcast, Downcast};
 use snafu::{OptionExt, ResultExt, Snafu};
 use std::collections::HashSet;
 use std::fmt;
@@ -46,9 +47,11 @@ fn value_into_ordered_nodes(v: Value<'_>) -> Result<OrderedNodes<'_>, Error> {
     }
 }
 
-pub trait Expression: fmt::Debug {
+pub trait Expression: fmt::Debug + Downcast {
     fn evaluate<'c, 'd>(&self, context: &context::Evaluation<'c, 'd>) -> Result<Value<'d>, Error>;
 }
+
+impl_downcast!(Expression);
 
 impl<T: ?Sized> Expression for Box<T>
 where
@@ -158,7 +161,7 @@ impl Expression for Equal {
 
 #[derive(Debug)]
 pub struct NotEqual {
-    equal: Equal,
+    pub equal: Equal,
 }
 
 impl NotEqual {
@@ -200,7 +203,7 @@ impl Expression for Function {
 
 #[derive(Debug)]
 pub struct Literal {
-    value: LiteralValue,
+    pub value: LiteralValue,
 }
 
 impl From<LiteralValue> for Literal {
@@ -216,9 +219,9 @@ impl Expression for Literal {
 }
 
 pub struct Math {
-    left: SubExpression,
-    right: SubExpression,
-    operation: fn(f64, f64) -> f64,
+    pub left: SubExpression,
+    pub right: SubExpression,
+    pub operation: fn(f64, f64) -> f64,
 }
 
 fn add(a: f64, b: f64) -> f64 {
@@ -313,8 +316,8 @@ impl Expression for Negation {
 
 #[derive(Debug)]
 pub struct Or {
-    left: SubExpression,
-    right: SubExpression,
+    pub left: SubExpression,
+    pub right: SubExpression,
 }
 
 binary_constructor!(Or);
@@ -329,8 +332,8 @@ impl Expression for Or {
 
 #[derive(Debug)]
 pub struct Path {
-    start_point: SubExpression,
-    steps: Vec<Step>,
+    pub start_point: SubExpression,
+    pub steps: Vec<Step>,
 }
 
 impl Path {
@@ -354,8 +357,8 @@ impl Expression for Path {
 
 #[derive(Debug)]
 pub struct Filter {
-    node_selector: SubExpression,
-    predicate: Predicate,
+    pub node_selector: SubExpression,
+    pub predicate: Predicate,
 }
 
 impl Filter {
@@ -463,7 +466,7 @@ impl Expression for RootNode {
 }
 
 #[derive(Debug)]
-struct Predicate {
+pub struct Predicate {
     pub expression: SubExpression,
 }
 
@@ -500,9 +503,9 @@ pub type StepTest = Box<dyn NodeTest + 'static>;
 
 #[derive(Debug)]
 pub struct ParameterizedStep<A> {
-    axis: A,
-    node_test: StepTest,
-    predicates: Vec<Predicate>,
+    pub axis: A,
+    pub node_test: StepTest,
+    pub predicates: Vec<Predicate>,
 }
 
 impl<A> ParameterizedStep<A>
