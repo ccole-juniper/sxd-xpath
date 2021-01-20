@@ -1,5 +1,5 @@
 [package]
-name = "sxd-xpath"
+name = "sxd-xpath-visitor"
 version = "0.4.3"
 authors = ["Jake Goulding <jake.goulding@gmail.com>", "ccole <ccole@juniper.net>"]
 edition = "2018"
